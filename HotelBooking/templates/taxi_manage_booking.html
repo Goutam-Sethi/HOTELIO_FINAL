@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manage Bookings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-700 text-white px-6 py-4 flex justify-between items-center shadow-md">
+        <div class="text-2xl font-bold">Hotelio</div>
+        <div class="space-x-4 text-lg">
+            <a href="{% url 'cab_booking' %}" class="hover:text-gray-300 transition">Home</a>
+        </div>
+    </nav>
+
+    <!-- Booking Section -->
+    <div class="max-w-7xl mx-auto bg-white p-10 mt-10 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Manage Your Bookings</h1>
+
+        {% if bookings %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto text-sm border border-gray-300">
+                <thead class="bg-gray-200 text-gray-700">
+                    <tr>
+                        <th class="border px-4 py-3 text-left">Car Name</th>
+                        <th class="border px-4 py-3 text-left">Pickup Location</th>
+                        <th class="border px-4 py-3 text-left">Dropoff Location</th>
+                        <th class="border px-4 py-3 text-left">Pickup Date & Time</th>
+                        <th class="border px-4 py-3 text-left">Dropoff Date & Time</th>
+                        <th class="border px-4 py-3 text-left">Driver's Phone No.</th>
+                        <th class="border px-4 py-3 text-left">Status</th>
+                        <th class="border px-4 py-3 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    {% for booking in bookings %}
+                        {% with pickup=booking.pickup_datetime dropoff=booking.dropoff_datetime %}
+                        <tr class="hover:bg-gray-100 transition">
+                            <td class="border px-4 py-2">{{ booking.car_name }}</td>
+                            <td class="border px-4 py-2">{{ booking.pickup_location }}</td>
+                            <td class="border px-4 py-2">{{ booking.dropoff_location }}</td>
+                            <td class="border px-4 py-2">{{ booking.pickup_datetime }}</td>
+                            <td class="border px-4 py-2">{{ booking.dropoff_datetime }}</td>
+                            <td class="border px-4 py-2">{{ booking.phone }}</td>
+
+                            <!-- Status Column -->
+                            <td class="border px-4 py-2">
+                                {% now "Y-m-d H:i:s" as now %}
+                                {% if now > dropoff|stringformat:"s" %}
+                                    <span class="text-green-600 font-semibold">Completed</span>
+                                {% elif now > pickup|stringformat:"s" %}
+                                    <span class="text-yellow-500 font-semibold">Ongoing</span>
+                                {% else %}
+                                    <span class="text-blue-500 font-semibold">Upcoming</span>
+                                {% endif %}
+                            </td>
+
+                            <!-- Action Buttons -->
+                            <td class="border px-4 py-2 space-y-1">
+                                {% if now < pickup|stringformat:"s" %}
+                                    <form method="POST" action="{% url 'cancel_booking' booking.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <span class="text-gray-400 italic block mb-1">Not cancellable</span>
+                                {% endif %}
+
+                                <a href="tel:{{ booking.phone }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition block text-center">
+                                    Contact Driver
+                                </a>                                
+                            </td>
+                        </tr>
+                        {% endwith %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <p class="text-gray-600 text-center mt-6">No bookings found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

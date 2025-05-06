@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Login | HOTELIO
+{% endblock title %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/userlogin.css' %}">
+
+{% endblock %}
+{% block main %}
+
+<div class="login-container">
+    <div class="login-box">
+        <h2 class="login-title">Login</h2>
+
+        <form method="POST">
+            {%csrf_token%}
+            <div class="input-group">
+                <input type="text" class="input-field" name="email" placeholder="Email" autocomplete="off" required>
+            </div>
+
+            <div class="input-group">
+                <input type="password" class="input-field" name="password" placeholder="Password" autocomplete="off" required>
+            </div>
+
+            <div class="input-group">
+                <select class="input-field" name="role" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
+            </div>
+
+            <div class="options">
+                <label>
+                    <input type="checkbox" name="remember"> Remember me
+                </label>
+                <a href="{% url 'forgot' %}" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <div class="or-divider">
+            <span>or continue with</span>
+        </div>
+        
+        <div class="social-login">
+            <a href="#" class="social-btn social-google">
+                <img src="{% static 'images/720255.png' %}" alt="Google Icon">
+                Continue with Google
+            </a>
+            <a href="#" class="social-btn social-facebook">
+                <img src="{% static 'images/fb-icon.jpeg' %}" alt="Facebook Icon">
+                Continue with Facebook
+            </a>
+        </div>
+        
+        
+
+        <p class="signup-text">
+            Don’t have an account? <a href="{% url 'signup' %}">Sign Up</a>
+        </p>
+    </div>
+</div>
+
+<script src="{% static 'JS/userlogin.js' %}"></script>
+{% endblock main %}
+
+{% block nav2 %}
+{% endblock nav2 %}
+
+{% block footer %}
+{% endblock footer %}

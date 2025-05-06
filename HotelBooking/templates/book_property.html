@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Book Property | HOTELIO
+{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/book_property.css' %}">
+{% endblock %}
+
+{% block main %}
+
+<!-- Django Messages -->
+{% if messages %}
+  <div class="flash-messages">
+    {% for message in messages %}
+      <div class="alert alert-info" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="book-property-container">
+    <h2>Book Hotel: {{ property.hotel_name }}</h2>
+
+    <!-- Promo Banner -->
+    <div class="promo-banner">
+        <h3>🎉 Limited Time Offer!</h3>
+        <p>Book now and get <strong>10% OFF</strong> on AC & Deluxe Rooms. Offer valid till midnight!</p>
+    </div>
+
+    <div class="booking-section">
+        <!-- Property Details -->
+        <div class="property-card">
+            <h3>🏨 Hotel Details</h3>
+            <div class="hotel-image">
+                {% if property.image_url %}
+                    <img src="{{ property.image_url }}" alt="{{ property.hotel_name }}" class="hotel-image-img">
+                {% else %}
+                    <img src="{% static 'images/default.jpg' %}" alt="No Image" class="hotel-image-img">
+                {% endif %}
+            </div>
+            
+
+            <p><strong>Description:</strong> {{ property.description }}</p>
+            <p><strong>Location:</strong> {{ property.location }}</p>
+            <p><strong>Price per Night:</strong> ₹{{ property.price }}</p>
+            <p><strong>Rooms Available:</strong> {{ property.rooms_available }}</p>
+            <p><strong>License No.:</strong> {{ property.license_number }}</p>
+        </div>
+
+        <!-- Booking Form -->
+        <form action="{% url 'book' property.id %}" method="POST" class="booking-form">
+            {% csrf_token %}
+
+            <!-- Fetch user info from session -->
+            {% with request.session.user_name as user_name %}
+            {% with request.session.user_email as user_email %}
+
+            <label for="user-name">👤 Your Name:</label>
+            <input type="text" id="user-name" name="user-name" value="{{ user_name|default:'' }}" {% if user_name %}readonly{% endif %} required>
+
+            <label for="user-phone">📞 Phone Number:</label>
+            <input type="text" id="user-phone" name="user-phone" required>
+
+            <label for="user-email">📧 Email Address:</label>
+            <input type="email" id="user-email" name="user-email" value="{{ user_email|default:'' }}" {% if user_email %}readonly{% endif %} required>
+
+            {% endwith %}
+            {% endwith %}
+
+            <label for="room-type">🛏️ Room Type:</label>
+            <select id="room-type" name="room-type" required>
+                {% for key, count in room_type_counts.items %}
+                    {% if count > 0 %}
+                        <option value="{{ key }}">{{ key|title }} ({{ count }} available)</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            
+
+            <label for="checkin-date">📅 Check-in Date:</label>
+            <input type="date" id="checkin-date" name="checkin-date" required>
+
+            <label for="checkout-date">📅 Check-out Date:</label>
+            <input type="date" id="checkout-date" name="checkout-date" required>
+
+            <label for="rooms">🏘️ Number of Rooms:</label>
+            <select id="rooms" name="rooms" required>
+                <!-- Options populated via JS -->
+            </select>
+
+            <button type="submit" class="book-now-btn">✅ Confirm Booking</button>
+        </form>
+    </div>
+
+    <!-- Customer Reviews Section (Optional: Fetch from API later) -->
+    <div class="reviews-section">
+        <h3>🌟 Customer Reviews</h3>
+
+        <div class="review-card">
+            <p><strong>John Doe</strong> - 5 stars</p>
+            <p>“Fantastic stay! Helpful staff and perfect room.”</p>
+        </div>
+        <div class="review-card">
+            <p><strong>Jane Smith</strong> - 4 stars</p>
+            <p>“Great location and amenities. Wi-Fi could be faster.”</p>
+        </div>
+    </div>
+</div>
+
+<script>
+  const checkinInput = document.getElementById("checkin-date");
+  const checkoutInput = document.getElementById("checkout-date");
+  const roomTypeSelect = document.getElementById("room-type");
+  const roomsSelect = document.getElementById("rooms");
+
+  const roomTypeCounts = {{ room_type_counts|safe }};
+
+
+  const today = new Date().toISOString().split("T")[0];
+  checkinInput.min = today;
+
+  checkinInput.addEventListener("change", () => {
+      checkoutInput.min = checkinInput.value;
+
+      if (checkoutInput.value && checkoutInput.value < checkinInput.value) {
+          checkoutInput.value = "";
+      }
+  });
+
+  function populateRoomOptions(maxRooms) {
+      roomsSelect.innerHTML = "";
+      for (let i = 1; i <= maxRooms; i++) {
+          const option = document.createElement("option");
+          option.value = i;
+          option.textContent = i;
+          roomsSelect.appendChild(option);
+      }
+  }
+
+  roomTypeSelect.addEventListener("change", function () {
+      const selectedType = this.value;
+      const available = roomTypeCounts[selectedType] || 0;
+      populateRoomOptions(available);
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+      const selectedType = roomTypeSelect.value;
+      const available = roomTypeCounts[selectedType] || 0;
+      populateRoomOptions(available);
+  });
+
+  document.querySelector("form").addEventListener("submit", function(event) {
+      const checkin = new Date(checkinInput.value);
+      const checkout = new Date(checkoutInput.value);
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+
+      if (checkin <= now) {
+          alert("Check-in date must be after today's date.");
+          event.preventDefault();
+          return;
+      }
+
+      if (checkout <= checkin) {
+          alert("Check-out date must be after the check-in date.");
+          event.preventDefault();
+          return;
+      }
+
+      const selectedType = roomTypeSelect.value;
+      const available = roomTypeCounts[selectedType] || 0;
+      const requestedRooms = parseInt(roomsSelect.value);
+      
+
+      if (requestedRooms > available) {
+          alert(`Only ${available} rooms available for the selected room type.`);
+          event.preventDefault();
+      }
+  });
+</script>
+
+{% endblock %}

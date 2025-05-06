@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+    main{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+    .property-card {
+        height:55vh;
+        width:25vw;
+        margin-right:10vw !important;
+
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 20px 0;
+        transition: transform 0.3s;
+        overflow: hidden;
+    }
+
+    .property-card img {
+        width: 20vw;
+        height: 20vh;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .property-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .property-card h2 {
+        margin-top: 0;
+        color: #333;
+    }
+
+    .property-card p {
+        color: #555;
+    }
+
+    .property-card a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .property-card a:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+    <h1>Search Results</h1>
+
+    {% if properties %}
+        {% for property in properties %}
+            <div class="property-card">
+                {% if property.image_filename %}
+                    <img src="{{ url_for('static', filename='images/' ~ property.image_filename) }}" alt="{{ property.name }}">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/default.jpg') }}" alt="No image available">
+                {% endif %}
+                <h2>{{ property.name }}</h2>
+                <p>{{ property.description }}</p>
+                <p><strong>Location:</strong> {{ property.location }}</p>
+                <p><strong>Price:</strong> ${{ property.price }}</p>
+                <a href="{{ url_for('book_property', property_id=property.id) }}">Book Now</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No properties found for this location.</p>
+    {% endif %}
+{% endblock %}

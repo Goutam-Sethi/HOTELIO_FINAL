@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock title %}
+{% block main %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+
+<div class="text-center">
+ <h2>Welcome, {{ current_user.name }}!</h2>
+ <p>Your role: <strong>{{ current_user.role }}</strong></p>
+ <hr>
+ 
+</div>
+
+<div class="container mt-5">
+    <div class="profile-card">
+        <h2 class="text-center">User Profile</h2>
+        <hr>
+        <div class="profile-info">
+            <label><strong>Full Name:</strong></label>
+            <p>{{ current_user.name }}</p>
+        </div>
+        <div class="profile-info">
+            <label><strong>Email:</strong></label>
+            <p>{{ current_user.email }}</p>
+        </div>
+        <div class="profile-info">
+            <label><strong>Phone Number:</strong></label>
+            <p>{{ current_user.phone }}</p>
+        </div>
+        <div class="profile-info">
+            <label><strong>Password:</strong></label>
+            <p>******** <a href="#">(Change Password)</a></p>
+        </div>
+        <div class="btn-group">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary" style="border-radius: 35px;">Back to Profile</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger" style="margin-left: 5vw; border-radius: 35px;">Logout</a>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock main %}

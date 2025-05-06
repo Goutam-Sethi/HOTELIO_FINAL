@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} HOTELIO | A HOTEL MANAGEMENT WEBSITE {% endblock title %}
+
+{% block main %}
+
+<!-- Tailwind, Bootstrap, Font Awesome -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+<!-- AOS (Animate On Scroll) -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 1000, once: true });
+</script>
+
+<!-- Hero Section -->
+<div class="container">
+  <div class="typing">Find your next stay</div>
+  <div class="subtitle">
+    Search low prices on hotels, homes and much more...
+  </div>
+</div>
+
+<!-- Search Form -->
+<form action="{% url 'search_properties' %}" class="search-form" method="GET">
+  <div class="form-group">
+    <label for="place">Where are you going?</label>
+    <input name="location_to_search" type="text" id="place" placeholder="Enter destination" required />
+  </div>
+  <button type="submit" class="search-button">Search</button>
+</form>
+
+<!-- Carousel -->
+<div id="carouselExampleAutoplaying" class="carousel slide my-4" data-bs-ride="carousel" data-aos="fade-up">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://assets.oyoroomscdn.com/cmsMedia/ce354285-aeae-46f6-815c-e5914b5ed0bf.jpg" class="d-block w-100" alt="..." />
+    </div>
+    <div class="carousel-item">
+      <img src="https://assets.oyoroomscdn.com/cmsMedia/33e8565d-f803-49ab-9269-a4bc97cd835d.jpg" class="d-block w-100" alt="..." />
+    </div>
+    <div class="carousel-item">
+      <img src="https://assets.oyoroomscdn.com/cmsMedia/33e8565d-f803-49ab-9269-a4bc97cd835d.jpg" class="d-block w-100" alt="..." />
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<!-- Trending Destinations -->
+<div class="trending-wrapper" style="padding: 40px; background-color: #f9f9f9; font-family: Arial, sans-serif;">
+  <h2 class="trending-title" style="font-size: 32px; font-weight: bold; margin-bottom: 10px; color: #333;">Trending destinations</h2>
+  <p class="trending-subtitle" style="font-size: 18px; color: #666; margin-bottom: 30px;">Most popular choices for travellers from India</p>
+
+  <div class="trending-grid" style="display: flex; flex-wrap: wrap; gap: 30px;">
+    <a href="http://127.0.0.1:8000/search/?location_to_search=Delhi" class="trending-card" style="flex: 1 1 calc(33.333% - 20px); position: relative; display: block; overflow: hidden; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.1); text-decoration: none;">
+      <img src="{% static 'images/delhi.jpg' %}" alt="New Delhi" style="width: 100%; height: 280px; object-fit: cover;">
+      <div class="card-title-overlay" style="position: absolute; bottom: 0; width: 100%;  color: #fff; padding: 12px 14px; font-size: 18px;">New Delhi, India</div>
+    </a>
+
+    <a href="http://127.0.0.1:8000/search/?location_to_search=Bangalore" class="trending-card" style="flex: 1 1 calc(33.333% - 20px); position: relative; display: block; overflow: hidden; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.1); text-decoration: none;">
+      <img src="{% static 'images/bengaluru.jpg' %}" alt="Bangalore" style="width: 100%; height: 280px; object-fit: cover;">
+      <div class="card-title-overlay" style="position: absolute; bottom: 0; width: 100%;  color: #fff; padding: 12px 14px; font-size: 18px;">Bangalore, India</div>
+    </a>
+
+    <a href="http://127.0.0.1:8000/search/?location_to_search=Mumbai" class="trending-card" style="flex: 1 1 calc(33.333% - 20px); position: relative; display: block; overflow: hidden; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.1); text-decoration: none;">
+      <img src="{% static 'images/mumbai.jpg' %}" alt="Mumbai" style="width: 100%; height: 280px; object-fit: cover;">
+      <div class="card-title-overlay" style="position: absolute; bottom: 0; width: 100%;  color: #fff; padding: 12px 14px; font-size: 18px;">Mumbai, India</div>
+    </a>
+
+    <a href="http://127.0.0.1:8000/search/?location_to_search=Chennai" class="trending-card" style="flex: 1 1 calc(50% - 15px); position: relative; display: block; overflow: hidden; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.1); text-decoration: none;">
+      <img src="{% static 'images/chennai.jpg' %}" alt="Chennai" style="width: 100%; height: 320px; object-fit: cover;">
+      <div class="card-title-overlay" style="position: absolute; bottom: 0; width: 100%;  color: #fff; padding: 14px 16px; font-size: 20px;">Chennai, India</div>
+    </a>
+
+    <a href="http://127.0.0.1:8000/search/?location_to_search=Varanasi" class="trending-card" style="flex: 1 1 calc(50% - 15px); position: relative; display: block; overflow: hidden; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.1); text-decoration: none;">
+      <img src="{% static 'images/pune.jpg' %}" alt="Varanasi" style="width: 100%; height: 320px; object-fit: cover;">
+      <div class="card-title-overlay" style="position: absolute; bottom: 0; width: 100%;  color: #fff; padding: 14px 16px; font-size: 20px;">Varanasi, India</div>
+    </a>
+  </div>
+</div>
+
+<!-- Trending Deals -->
+<div class="rooms-wrapper py-5" data-aos="fade-up">
+  <h3 class="text-center mb-3">Trending Deals of the Week</h3>
+  <button class="scroll-button scroll-left" onclick="scrollLeft()">&#10094;</button>
+
+  <div class="rooms-container" id="rooms">
+    {% for room in rooms %}
+    <div class="room-card" data-aos="zoom-in" data-aos-delay="{{ forloop.counter|add:'0'|add:'00' }}">
+      <img src="{% static 'images/' %}{{ room.img }}" alt="{{ room.name }}">
+      <h3>{{ room.name }}</h3>
+      <p>{{ room.place }}, India</p>
+      <p>{{ room.price }} for 2 nights</p>
+
+      {% if request.session.is_authenticated %}
+        <a href="{% url 'available_properties' %}" class="add-to-cart">Book Now</a>
+      {% else %}
+        <a href="{% url 'login' %}?next={% url 'home' %}" class="add-to-cart">Login to Book</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <button class="scroll-button scroll-right" onclick="scrollRight()">&#10095;</button>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const typingElement = document.querySelector('.typing');
+  const texts = [
+    'Find your next stay',
+    'Discover amazing destinations',
+    'Book your dream vacation',
+    'Enjoy a comfortable stay',
+    'Your perfect getaway is here'
+  ];
+  let currentTextIndex = 0;
+  let isTyping = true;
+
+  function typeAndErase() {
+    if (isTyping) {
+      typingElement.textContent = texts[currentTextIndex];
+      typingElement.style.width = `${typingElement.textContent.length + 1}ch`;
+      setTimeout(() => {
+        isTyping = false;
+        setTimeout(typeAndErase, 1000);
+      }, 2000);
+    } else {
+      typingElement.style.width = '0';
+      setTimeout(() => {
+        currentTextIndex = (currentTextIndex + 1) % texts.length;
+        isTyping = true;
+        typeAndErase();
+      }, 1500);
+    }
+  }
+
+  typeAndErase();
+</script>
+
+{% endblock main %}

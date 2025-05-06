@@ -1,0 +1,150 @@
+/* General Container Styling */
+.book-property-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Promo Banner Styling */
+.promo-banner {
+    background-color: #f1c40f;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.promo-banner h3 {
+    font-size: 24px;
+    color: #fff;
+}
+
+.promo-banner p {
+    font-size: 18px;
+    color: #fff;
+}
+
+/* Flex Container for the Property Details and Form */
+.booking-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* Property Details Styling */
+.property-card {
+    flex: 1;
+    max-width: 500px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.property-card h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+/* Hotel Image */
+.hotel-image {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.hotel-image-img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Booking Form Styling */
+.booking-form {
+    flex: 1;
+    max-width: 500px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Label Styling */
+.booking-form label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: block;
+    color: #333;
+}
+
+/* Input Fields Styling */
+.booking-form input,
+.booking-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+/* Submit Button Styling */
+.booking-form button {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.booking-form button:hover {
+    background-color: #27ae60;
+}
+
+/* Customer Reviews Section Styling */
+.reviews-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.reviews-section h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.review-card {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.review-card p {
+    font-size: 16px;
+}
+
+.review-card strong {
+    font-size: 18px;
+    color: #2ecc71;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .booking-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .reviews-section {
+        margin-top: 20px;
+    }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center shadow">
+        <div class="text-2xl font-bold tracking-wide">Hotelio</div>
+        <div class="space-x-4 text-lg">
+            <a href="{% url 'home' %}" class="hover:text-gray-300 transition">Home</a>
+        </div>
+    </nav>
+
+    <!-- Confirmation Box -->
+    <div class="max-w-4xl mx-auto bg-white p-8 mt-10 rounded-xl shadow-lg border border-gray-200">
+        <div class="text-center mb-6">
+            <h2 class="text-3xl font-extrabold text-green-600">Booking Confirmed!</h2>
+            <p class="text-gray-600 mt-2">Thank you for choosing Hotelio!</p>
+        </div>
+
+        <!-- Car and Driver Section -->
+        {% if car %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mb-8">
+            <div class="flex justify-center">
+                <img src="{{ car.image.url }}" alt="{{ car.name }}" class="rounded-lg w-64 shadow-md border">
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-2 text-gray-800">Car & Driver Details</h3>
+                <p class="mb-2"><span class="font-semibold text-gray-700">Car Name:</span> {{ car.name }}</p>
+                <p class="mb-2"><span class="font-semibold text-gray-700">Rate per Hour:</span> ₹{{ car.rate_per_hour }}</p>
+                <h4 class="mt-4 text-lg font-semibold text-gray-800">Driver Info</h4>
+                <p class="mb-1"><span class="font-semibold text-gray-700">Name:</span> {{ car.driver_name }}</p>
+                <p class="mb-1"><span class="font-semibold text-gray-700">Phone:</span> {{ car.driver_phone }}</p>
+                <p><span class="font-semibold text-gray-700">Rating:</span> ⭐ {{ car.driver_rating }}</p>
+            </div>
+        </div>
+        {% else %}
+            <p class="text-red-600 text-center text-lg font-semibold mb-8">No car information available.</p>
+        {% endif %}
+
+        <hr class="my-6 border-gray-300">
+
+        <!-- Booking Details -->
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">Booking Details</h3>
+            <div class="space-y-2">
+                <p><span class="font-semibold text-gray-700">Pickup:</span> {{ booking.pickup_location }} on {{ booking.pickup_date }} at {{ booking.pickup_time }}</p>
+                <p><span class="font-semibold text-gray-700">Dropoff:</span> {{ booking.dropoff_location }} on {{ booking.dropoff_date }} at {{ booking.dropoff_time }}</p>
+                <p><span class="font-semibold text-gray-700">Phone:</span> {{ booking.phone }}</p>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="{% url 'home' %}" class="bg-blue-600 text-white font-medium px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">
+                Back to Home
+            </a>
+            <a href="{% url 'manage_bookings' %}" class="bg-gray-700 text-white font-medium px-6 py-3 rounded-lg shadow hover:bg-gray-800 transition">
+                Manage Bookings
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

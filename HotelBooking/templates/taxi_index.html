@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Car Rental</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f0f2f5;
+    }
+
+    header {
+      background-color: #003580;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .hero {
+      position: relative;
+      background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20230621/pngtree-yellow-taxi-sign-in-3d-with-map-pointer-a-digital-solution-image_3650811.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 55vh;
+      color: rgb(255, 255, 255);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+
+    .features span::before {
+      content: "✓ ";
+      color: #00ff90;
+    }
+
+    .booking-panel {
+      background-color: white;
+      margin: -50px auto 0;
+      max-width: 1100px;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 2;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      grid-column: 1 / -1;
+      padding: 0.8rem;
+      background-color: #003580;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #002d66;
+    }
+
+    .logo-link {
+      text-decoration: none;
+      color: white;
+    }
+
+    .manage-btn {
+      background: white;
+      color: black;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+
+    .manage-btn:hover {
+      background-color: #ddd;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .booking-panel {
+        margin: -30px 1rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="{% url 'home' %}" class="logo-link"><div class="logo">Hotelio</div></a>
+  <a href="{% url 'manage_bookings' %}" class="manage-btn">Manage Booking</a>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Car Rental - Search, Compare & Save</h1>
+    <p>Find private rides that define luxury and comfort.</p>
+    <div class="features">
+      <span>Free cancellations on most bookings</span>
+      <span>60,000+ locations</span>
+      <span>Support in 30+ languages</span>
+    </div>
+  </div>
+</section>
+
+<div class="booking-panel">
+  <form id="searchForm" action="{% url 'car_selection' %}" method="POST" onsubmit="return validateForm()">
+    {% csrf_token %}
+    <div>
+      <label>Pick-up location</label>
+      <input type="text" id="location" name="location" placeholder="Enter location" required>
+      <div class="error" id="locationError"></div>
+    </div>
+    <div>
+      <label>Pick-up date</label>
+      <input type="date" id="pickup-date" name="pickup_date" required>
+      <div class="error" id="pickupDateError"></div>
+    </div>
+    <div>
+      <label>Pick-up time</label>
+      <input type="time" id="pickup-time" name="pickup_time" required>
+      <div class="error" id="pickupTimeError"></div>
+    </div>
+    <div>
+      <label>Drop-off date</label>
+      <input type="date" id="dropoff-date" name="dropoff_date" required>
+      <div class="error" id="dropoffDateError"></div>
+    </div>
+    <div>
+      <label>Drop-off time</label>
+      <input type="time" id="dropoff-time" name="dropoff_time" required>
+      <div class="error" id="dropoffTimeError"></div>
+    </div>
+    <button type="submit">Search Ride</button>
+  </form>
+</div>
+
+<script>
+  function validateForm() {
+    let isValid = true;
+
+    // Clear all previous error messages
+    document.querySelectorAll('.error').forEach(el => el.innerHTML = '');
+
+    const location = document.getElementById('location').value.trim();
+    if (!location) {
+      document.getElementById('locationError').innerHTML = 'Location is required.';
+      isValid = false;
+    }
+
+    const pickupDateValue = document.getElementById('pickup-date').value;
+    const pickupTimeValue = document.getElementById('pickup-time').value;
+    const dropoffDateValue = document.getElementById('dropoff-date').value;
+    const dropoffTimeValue = document.getElementById('dropoff-time').value;
+
+    const pickupDateTime = new Date(`${pickupDateValue}T${pickupTimeValue}`);
+    const dropoffDateTime = new Date(`${dropoffDateValue}T${dropoffTimeValue}`);
+    const now = new Date();
+
+    if (pickupDateTime < now) {
+      document.getElementById('pickupTimeError').innerHTML = 'Pick-up time cannot be in the past.';
+      isValid = false;
+    }
+
+    if (dropoffDateTime <= pickupDateTime) {
+      document.getElementById('dropoffTimeError').innerHTML = 'Drop-off must be after pick-up.';
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  document.getElementById('searchForm').addEventListener('submit', function () {
+        localStorage.setItem('pickup_location', document.getElementById('pickup_location').value);
+        localStorage.setItem('dropoff_location', document.getElementById('dropoff_location').value);
+        localStorage.setItem('name', document.getElementById('name').value);
+        localStorage.setItem('phone', document.getElementById('phone').value);
+    });
+</script>
+
+</body>
+</html>

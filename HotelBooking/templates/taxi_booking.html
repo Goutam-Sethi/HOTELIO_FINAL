@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Car</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Set margin and padding to zero for the whole document */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Navbar touches the top and sides */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        /* Optional: add a small margin to body content to prevent overlap */
+        body {
+            margin-top: 60px; /* Adjust based on navbar height */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 py-10 px-4 sm:px-6 lg:px-8">
+
+    <!-- Simple Navigation Bar -->
+    <nav class="bg-blue-600 p-4 shadow-md">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Company Name as Logo -->
+            <a href="/" class="text-white text-2xl font-semibold">Hotelio</a>
+
+            <!-- Menu (Desktop) -->
+            <div class="hidden md:flex space-x-6">
+                <a href="/" class="text-white hover:text-gray-300">Home</a>
+            </div>
+
+            <!-- Hamburger Icon (Mobile) -->
+            <div class="md:hidden">
+                <button id="hamburger" class="text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden bg-blue-600 p-4 mt-4 space-y-4 hidden">
+            <a href="/" class="text-white block hover:text-gray-300">Home</a>
+        </div>
+    </nav>
+
+    <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-8 space-y-6 mt-24">
+        <!-- Car Info Card (outside the form) -->
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6 shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Booking for: {{ car.name }}</h2>
+            <p class="text-gray-700"><strong>Type:</strong> {{ car.rate_per_hour }}</p>
+        </div>
+
+        <!-- Booking Form -->
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Book Your Car</h1>
+
+        <form method="POST" class="space-y-6" id="bookingForm">
+            {% csrf_token %}
+
+            <!-- Pickup Location -->
+            <div>
+                <label for="pickup_location" class="block font-medium text-gray-700">Pickup Location</label>
+                <input type="text" name="pickup_location" id="pickup_location" required
+                    class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Dropoff Location -->
+            <div>
+                <label for="dropoff_location" class="block font-medium text-gray-700">Dropoff Location</label>
+                <input type="text" name="dropoff_location" id="dropoff_location" required
+                    class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Pickup Date & Time -->
+            <div>
+                <label for="pickup_datetime" class="block font-medium text-gray-700">Pickup Date & Time</label>
+                <input type="datetime-local" name="pickup_datetime" id="pickup_datetime" required
+                    class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <p class="text-red-500 text-sm hidden" id="pickupError">Pick-up date & time cannot be in the past.</p>
+            </div>
+
+            <!-- Dropoff Date & Time -->
+            <div>
+                <label for="dropoff_datetime" class="block font-medium text-gray-700">Dropoff Date & Time</label>
+                <input type="datetime-local" name="dropoff_datetime" id="dropoff_datetime" required
+                    class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <p class="text-red-500 text-sm hidden" id="dropoffError">Drop-off date & time must be after pick-up date & time.</p>
+            </div>
+
+            <!-- Name -->
+            <div>
+                <label for="name" class="block font-medium text-gray-700">Your Name</label>
+                <input type="text" name="username" id="name" required
+                    class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Phone -->
+            <div>
+                <label for="phone" class="block font-medium text-gray-700">Phone Number</label>
+                <input type="tel" name="phone" id="phone" required
+                    class="w-full mt-2 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">
+                    Confirm Booking
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            let isValid = true;
+
+            // Get current date and time
+            const now = new Date();
+            
+            // Validate Pickup Date & Time
+            const pickupDateTime = new Date(document.getElementById('pickup_datetime').value);
+            if (pickupDateTime < now) {
+                document.getElementById('pickupError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('pickupError').classList.add('hidden');
+            }
+
+            // Validate Dropoff Date & Time (Must be after Pickup Date & Time)
+            const dropoffDateTime = new Date(document.getElementById('dropoff_datetime').value);
+            if (dropoffDateTime <= pickupDateTime) {
+                document.getElementById('dropoffError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('dropoffError').classList.add('hidden');
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+
+    // Fill form fields with stored data if available
+    window.addEventListener('DOMContentLoaded', function () {
+    if (localStorage.getItem('pickup_location')) {
+      document.getElementById('pickup_location').value = localStorage.getItem('pickup_location');
+    }
+    if (localStorage.getItem('dropoff_location')) {
+      document.getElementById('dropoff_location').value = localStorage.getItem('dropoff_location');
+    }
+    if (localStorage.getItem('name')) {
+      document.getElementById('name').value = localStorage.getItem('name');
+    }
+    if (localStorage.getItem('phone')) {
+      document.getElementById('phone').value = localStorage.getItem('phone');
+    }
+  });
+
+    </script>
+</body>
+</html>

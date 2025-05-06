@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<style>
+    .booking-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 20px 0;
+        transition: transform 0.3s;
+    }
+
+    .booking-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .booking-card h2 {
+        color: #333;
+    }
+
+    .booking-card p {
+        color: #555;
+    }
+</style>
+
+<h1>Your Bookings</h1>
+
+{% if bookings %}
+    <ul class="booking-list">
+        {% for booking in bookings %}
+            <li class="booking-card">
+                <h2>{{ booking.property.name }}</h2>
+                <p><strong>Booked by:</strong> {{ booking.user_name }}</p>
+                <p><strong>Email:</strong> {{ booking.user_email }}</p>
+                <p><strong>Phone:</strong> {{ booking.user_phone }}</p>
+                <p><strong>Date:</strong> {{ booking.booking_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                <p><strong>Location:</strong> {{ booking.property.location }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No bookings found.</p>
+{% endif %}
+{% endblock %}

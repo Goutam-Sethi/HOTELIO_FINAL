@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+/* Center the main content */
+main {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Title styling */
+.search-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* No results message */
+.no-results {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #777;
+}
+
+/* Grid layout for properties */
+.properties-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Flexible grid layout */
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+    justify-items: center;
+}
+
+/* Property Card */
+.property-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    text-align: left;
+    width: 100%;
+}
+
+/* Card Image */
+.property-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Overlay for no rooms available */
+.no-rooms-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    visibility: hidden;
+}
+
+/* Show overlay when no rooms are available */
+.property-card.no-rooms .no-rooms-overlay {
+    visibility: visible;
+}
+
+/* Hover Effects */
+.property-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Property Details */
+.property-card h2 {
+    color: #222;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.property-card p {
+    color: #555;
+    font-size: 1rem;
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+/* Price & Location Styling */
+.property-card p strong {
+    color: #333;
+}
+
+/* General button styles */
+.book-now-btn {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+    margin-top: 15px;
+    text-decoration: none; /* This removes the underline */
+}
+
+/* Hover effect for Book Now button */
+.book-now-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+/* Disabled state */
+.book-now-btn:disabled {
+    background-color: #ddd;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+/* Button for users not logged in */
+.book-now-btn.login-to-book {
+    background-color: #f44336;
+}
+
+.book-now-btn.login-to-book:hover {
+    background-color: #e53935;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .properties-container {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<h1 class="search-title">Search Results</h1>
+
+{% if properties %}
+    <div class="properties-container">
+        {% for property in properties %}
+        <div class="property-card {% if property.rooms_available == 0 %}no-rooms{% endif %}">
+            <img src="{{ property.image }}" alt="{{ property.hotel_name }}">
+            <h2>{{ property.hotel_name }}</h2>
+            <p><strong>Location:</strong> {{ property.location }}</p>
+            <p><strong>Price per night:</strong> ₹{{ property.price }}</p>
+            <p>{{ property.description|truncatewords:20 }}</p>
+
+            <!-- Overlay for no rooms available -->
+            <div class="no-rooms-overlay">No Rooms Available</div>
+
+            {% if property.rooms_available > 0 %}
+                {% if request.session.is_authenticated %}
+                    <a href="{% url 'book' property.id %}" class="book-now-btn">Book Now</a>
+                {% else %}
+                    <a href="{% url 'login' %}?next={% url 'book' property.id %}" class="book-now-btn login-to-book">Login to Book</a>
+                {% endif %}
+            {% else %}
+                <button class="book-now-btn" disabled>No Rooms Available</button>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="no-results">No properties found for the specified location.</p>
+{% endif %}
+{% endblock %}

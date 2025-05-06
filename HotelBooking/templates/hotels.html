@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Available Properties | HOTELIO
+{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/hotels.css' %}">
+<style>
+    #properties-container {
+        padding: 40px 60px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 35px;
+    }
+
+    .property-box-wrapper {
+        position: relative;
+    }
+
+    .property-box {
+        background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+        border: 1px solid #e0e0e0;
+    }
+
+    .property-box:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .property-image {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .property-details {
+        padding: 20px;
+    }
+
+    .property-details h3 {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #2c3e50;
+        text-transform: uppercase;
+    }
+
+    .property-details p {
+        font-size: 15px;
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+    .book-now-btn {
+        margin-top: 14px;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .book-now-btn:hover {
+        background: linear-gradient(135deg, #0056b3, #003f80);
+    }
+
+    .disabled-btn {
+        background-color: #adb5bd !important;
+        cursor: not-allowed !important;
+        font-weight: 500;
+    }
+
+    .flash-messages .alert {
+        margin: 20px auto;
+        width: 90%;
+        max-width: 600px;
+        padding: 15px 20px;
+        border-radius: 10px;
+        font-size: 16px;
+        text-align: center;
+    }
+</style>
+
+{% endblock %}
+
+{% block main %}
+
+<!-- Flash messages -->
+{% if messages %}
+  <div class="flash-messages">
+    {% for message in messages %}
+      <div class="alert alert-info" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<!-- Property Listings -->
+<div id="properties-container">
+    {% for property in properties %}
+    <div class="property-box-wrapper">
+        <div class="property-box">
+            {% if property.image_url %}
+                <img src="{{ property.image_url }}" alt="{{ property.hotel_name }}" class="property-image">
+            {% else %}
+                <img src="{% static 'images/default.jpg' %}" alt="No Image" class="property-image">
+            {% endif %}
+
+            <div class="property-details">
+                <h3>{{ property.hotel_name }}</h3>
+                <p><strong>Description:</strong> {{ property.description }}</p>
+                <p><strong>Location:</strong> {{ property.location }}</p>
+                <p><strong>Price:</strong> ₹{{ property.price }}</p>
+                <p><strong>Rooms Available:</strong> {{ property.rooms_available }}</p>
+                <p><strong>License No.:</strong> {{ property.license_number }}</p>
+
+                {% if request.session.is_authenticated and property.rooms_available > 0 %}
+                    <button class="book-now-btn" onclick="window.location.href='{% url 'book' property.id %}'">Book Now</button>
+                {% elif not request.session.is_authenticated and property.rooms_available > 0 %}
+                    <button class="book-now-btn" onclick="window.location.href='{% url 'login' %}'">Login to Book</button>
+                {% else %}
+                    <button class="book-now-btn disabled-btn" disabled>No Booking</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+</div>
+
+{% endblock %}

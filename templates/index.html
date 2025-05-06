@@ -1,0 +1,278 @@
+{% extends 'base.html' %} {% block title %} HOTELIO | A HOTEL MANAGEMENT WEBSITE
+{% endblock title %}
+
+
+{% block main %}
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="{{url_for('static',filename='index.css')}}" />
+
+{% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="alert alert-info" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+<div class="container">
+  <div class="typing">Find your next stay</div>
+  <div class="subtitle">
+    Search low prices on hotels, homes and much more...
+  </div>
+</div>
+
+<form action="{{url_for('search_properties')}}" class="search-form" method="GET">
+  <div class="form-group">
+    <label for="place">Where are you going?</label>
+    <input name="location_to_search"
+      type="text"
+      id="place"
+      
+      placeholder="Enter destination"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="checkin">Check-in date</label>
+    <input type="date" id="checkin" name="checkin" />
+  </div>
+
+  <div class="form-group">
+    <label for="checkout">Check-out date</label>
+    <input type="date" id="checkout" name="checkout" />
+  </div>
+
+  <button type="submit" class="search-button">Search</button>
+</form>
+
+<div
+  id="carouselExampleAutoplaying"
+  class="carousel slide"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img
+        src="https://assets.oyoroomscdn.com/cmsMedia/ce354285-aeae-46f6-815c-e5914b5ed0bf.jpg"
+        class="d-block w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item">
+      <img
+        src="https://assets.oyoroomscdn.com/cmsMedia/33e8565d-f803-49ab-9269-a4bc97cd835d.jpg"
+        class="d-block w-100"
+        alt="..."
+      />
+    </div>
+    <div class="carousel-item">
+      <img
+        src="https://assets.oyoroomscdn.com/cmsMedia/33e8565d-f803-49ab-9269-a4bc97cd835d.jpg"
+        class="d-block w-100"
+        alt="..."
+      />
+    </div>
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExampleAutoplaying"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExampleAutoplaying"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<div class="bg-white">
+  <div class="max-w-6xl mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-2">Trending destinations</h1>
+    <p class="text-gray-600 mb-6">
+      Most popular choices for travellers from India
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="relative">
+        <img
+          alt="Humayun's Tomb in New Delhi"
+          class="w-full h-full object-cover rounded-lg"
+          height="400"
+          src="https://storage.googleapis.com/a1aa/image/Adj5Ua6zjmAU82YBA0iEZSuRBv5dt8EeL8yK9mj4Vh0.jpg"
+          width="600"
+        />
+        <div class="absolute bottom-4 left-4 text-white">
+          <h2 class="text-xl font-bold">
+            New Delhi
+            <span class="fi fi-in"> </span>
+          </h2>
+        </div>
+      </div>
+      <div class="relative">
+        <img
+          alt="Vidhana Soudha in Bangalore"
+          class="w-full h-full object-cover rounded-lg"
+          height="400"
+          src="https://storage.googleapis.com/a1aa/image/9q_AA2xCyx5o6uH3lyF_jbVAbUyH5juyL05ZftBgw5E.jpg"
+          width="600"
+        />
+        <div class="absolute bottom-4 left-4 text-white">
+          <h2 class="text-xl font-bold">
+            Bangalore
+            <span class="fi fi-in"> </span>
+          </h2>
+        </div>
+      </div>
+      <div class="relative">
+        <img
+          alt="Mumbai skyline"
+          class="w-full h-full object-cover rounded-lg"
+          height="400"
+          src="../static/images/Mummbaii.jpg"
+          width="600"
+        />
+        <div class="absolute bottom-4 left-4 text-white">
+          <h2 class="text-xl font-bold">
+            Mumbai
+            <span class="fi fi-in"> </span>
+          </h2>
+        </div>
+      </div>
+      <div class="relative">
+        <img
+          alt="Chennai cityscape"
+          class="w-full h-full object-cover rounded-lg"
+          height="400"
+          src="https://storage.googleapis.com/a1aa/image/Efj-_bzPvqw2Iz5GEqWCRcvBvkgq5TLNB75i5sKGQdI.jpg"
+          width="600"
+        />
+        <div class="absolute bottom-4 left-4 text-white">
+          <h2 class="text-xl font-bold">
+            Chennai
+            <span class="fi fi-in"> </span>
+          </h2>
+        </div>
+      </div>
+      <div class="relative">
+        <img
+          alt="Charminar in Hyderabad"
+          class="w-full h-full object-cover rounded-lg"
+          height="400"
+          src="../static/images/Hyderabad.jpg"
+          width="600"
+        />
+        <div class="absolute bottom-4 left-4 text-white">
+          <h2 class="text-xl font-bold">
+            Hyderabad
+            <span class="fi fi-in"> </span>
+          </h2>
+        </div>
+      </div>
+      <div class="relative">
+        <img
+          alt="Gateway of India in Mumbai"
+          class="w-full h-full object-cover rounded-lg"
+          height="400"
+          src="https://storage.googleapis.com/a1aa/image/kTLHsH_ePKNe3QnCfEiM9wVZF_FAgc0ciY_8wuWeNgA.jpg"
+          width="600"
+        />
+        <div class="absolute bottom-4 left-4 text-white">
+          <h2 class="text-xl font-bold">
+            Mumbai
+            <span class="fi fi-in"> </span>
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="rooms-wrapper">
+  <h3 style="margin: 10px;">Treanding Deals of the Week</h3>
+  <button class="scroll-button scroll-left" onclick="scrollLeft()">&#10094;</button>
+  
+  <div class="rooms-container" id="rooms">
+    <div class="room-card">
+      <img src="../static/images/Treebo.webp" alt="Treebo Corporate Park">
+      <h3>Treebo Corporate Park</h3>
+      <p>New Delhi, India</p>
+      <p>₹ 8,594 for 2 nights</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    
+    <div class="room-card">
+      <img src="../static/images/Quality_In_ELite.jpg" alt="Quality Inn Elite">
+      <h3>Quality Inn Elite, Amritsar</h3>
+      <p>Amritsar, India</p>
+      <p>₹ 5,670 for 2 nights</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="room-card">
+      <img src="../static//images/Shimla hotel.webp" alt="Aachman Valley Resort">
+      <h3>Aachman Valley Resort Shimla</h3>
+      <p>Shimla, India</p>
+      <p>₹ 2,608 for 2 nights</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="room-card">
+      <img src="../static/images/Airport residency.webp" alt="Hotel Airport Residency">
+      <h3>Hotel Airport Residency</h3>
+      <p>New Delhi, India</p>
+      <p>₹ 7,260 for 2 nights</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="room-card">
+      <img src="../static/images/Bengaluru.hotel.avif" alt="Hotel Airport Residency">
+      <h3>Hotel Airport Residency</h3>
+      <p>New Delhi, India</p>
+      <p>₹ 7,260 for 2 nights</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+    <div class="room-card">
+      <img src="../static/images/5-starhotel.jpg" alt="Hotel Airport Residency">
+      <h3>Hotel Airport Residency</h3>
+      <p>New Delhi, India</p>
+      <p>₹ 7,260 for 2 nights</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+  </div>
+  
+  <button class="scroll-button scroll-right" onclick="scrollRight()">&#10095;</button>
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../static/JS/index.js"></script>
+
+{% endblock main %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Login | HOTELIO
+{% endblock title %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/forgot.css' %}">
+{% endblock %}
+
+
+{% block main %}
+
+<div class="container">
+    <div class="card">
+        <h2>Forgot Password</h2>
+        <p>Enter your email to receive a password reset link.</p>
+        <div class="input-group">
+            <input type="email" id="email" placeholder="Enter your email">
+        </div>
+        <button onclick="handleReset()">Reset Password</button>
+        <p id="message" class="message"></p>
+        <p class="back-to-login"><a href="{% url 'login' %}">Remember password? Back to Login</a></p>
+    </div>
+</div>
+<script>
+    function handleReset() {
+        const email = document.getElementById("email").value;
+        const message = document.getElementById("message");
+        if (!email) {
+            message.textContent = "Please enter a valid email address.";
+            message.style.color = "red";
+            return;
+        }
+        message.textContent = "A password reset link has been sent to your email.";
+        message.style.color = "green";
+    }
+</script>
+
+
+{% endblock main %}
+
+
+{% block nav2 %}
+    
+{% endblock nav2 %}

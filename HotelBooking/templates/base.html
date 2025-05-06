@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Hotelio{% endblock title %}</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  {% block style %}{% endblock %}
+</head>
+<body>
+  <header>
+    {% block header %}
+    
+    <!-- Navbar -->
+    <nav id="nav">
+      <div id="nam"><a href="{% url 'home' %}">Hotelio</a></div>
+      <div class="nav-items">
+        {% if request.session.is_authenticated %}
+          {% if request.session.role == 'admin' %}
+            <a href="{% url 'listProperty' %}">List your properties</a>
+          {% endif %}
+
+          <!-- Offcanvas Button -->
+          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+            ☰
+          </button>
+
+          <!-- Offcanvas Sidebar -->
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+            <div class="offcanvas-header">
+              <h5 id="offcanvasSidebarLabel">
+                Welcome, {{ request.session.name }}
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body bg-white text-dark">
+              <a href="{% url 'dashboard' %}" class="d-block mb-2 text-dark">Profile</a>
+              <a href="{% url 'logout' %}" class="d-block mb-2 text-dark">Logout</a>
+
+              {% if request.session.role == 'admin' %}
+                <a href="{% url 'owner_dashboard' %}" class="d-block mb-2 text-dark">Admin Panel</a>
+              {% else %}
+                <a href="{% url 'user_bookings' %}" class="d-block mb-2 text-dark">My Bookings</a>
+              {% endif %}
+            </div>
+          </div>
+
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
+          <a href="{% url 'signup' %}" class="btn btn-primary">Register</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+    <nav id="nav2">
+      {% block nav2 %}
+      <ul>
+        <li><a href="{% url 'available_properties' %}" class="nav-item">Stays</a></li>
+        <li><a href="https://www.ixigo.com" class="nav-item">Flights</a></li>
+        <li>
+          <a href="{% if request.session.is_authenticated %}{% url 'cab_booking' %}{% else %}#{% endif %}"
+             onclick="return checkLogin();" class="nav-item">
+             Taxis
+          </a>
+        </li>
+      {% endblock nav2 %}
+    </nav>
+
+    {% endblock header %}
+  </header>
+
+  <main>  
+    {% if messages %}
+    <div class="message-container">
+      {% for message in messages %}
+        <input type="checkbox" id="msg-close-{{ forloop.counter }}" class="msg-toggle" hidden>
+        <div class="alert {{ message.tags }}">
+          <label for="msg-close-{{ forloop.counter }}" class="close-btn" title="Dismiss">&times;</label>
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block main %}{% endblock main %}
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    {% block footer %}
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="footer-column">
+          <h3>Support</h3>
+          <ul>
+            <li><a href="#">Coronavirus (COVID-19) FAQs</a></li>
+            <li><a href="#">Manage your trips</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact Customer Service</a></li>
+            <li><a href="#">Safety resource centre</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Discover</h3>
+          <ul>
+            <li><a href="#">Travel articles</a></li>
+            <li><a href="#">Car hire</a></li>
+            <li><a href="#">Flight finder</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Terms and settings</h3>
+          <ul>
+            <li><a href="{% url 'privacy' %}">Privacy & cookies</a></li>
+            <li><a href="{% url 'privacy' %}">Terms and conditions</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>About</h3>
+          <ul>
+            <li><a href="{% url 'about_us' %}">About Hotelio.com</a></li>
+            <li><a href="#">How we work</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="currency">
+          <span>🇮🇳</span> INR
+        </div>
+        <div class="legal">
+          <p>Hotelio.com is part of Hotelio Holdings Inc., the world leader in online travel and related services.</p>
+          <p>Copyright © 2005–2025 Hotelio.com™. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    {% endblock footer %}
+  </footer>
+
+  <script src="{% static 'JS/base.js' %}"></script>
+</body>
+</html>

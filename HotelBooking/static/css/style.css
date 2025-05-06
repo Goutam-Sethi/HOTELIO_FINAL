@@ -1,0 +1,294 @@
+/* Reset and Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+  }
+  
+  /* ================= NAVBAR ================= */
+  
+  #nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background-color: #004080; /* Dark Blue */
+    color: #fff;
+  }
+  
+  #nav #nam a {
+    font-size: 32px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  .nav-items {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  #nav a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #ffffff;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-items .btn {
+    padding: 6px 14px;
+    font-size: 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    border: 1px solid #ffffff;
+    background-color: transparent;
+    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .nav-items .btn:hover {
+    background-color: #ffffff;
+    color: #004080;
+    cursor: pointer;
+  }
+  
+  /* ================= SUB NAVBAR ================= */
+  
+  #nav2 {
+    background-color: #eaf3fc;
+    padding: 10px 20px;
+    border-bottom: 1px solid #d1e3f0;
+  }
+  
+  #nav2 ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+  }
+  
+  #nav2 ul li {
+    margin-right: 25px;
+  }
+  
+  #nav2 ul li a {
+    color: #004080;
+    font-size: 16px;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    border-radius: 35px;
+    text-decoration: none;
+  }
+  
+  #nav2 ul li a:hover {
+    color: #007bff;
+    border: 1px solid #007bff;
+    background-color: #f0f8ff;
+  }
+
+ /* Position the close button in the top-right */
+.close-btn {
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  margin-left: 10px;
+  line-height: 1;
+}
+
+/* Hide the message when the checkbox is checked */
+.msg-toggle:checked + .alert {
+  display: none;
+}
+
+/* Optional: spacing between multiple messages */
+.message-container .alert {
+  margin-bottom: 10px;
+  padding-right: 35px;
+  position: relative;
+}
+
+  /* ================= SEARCH FORM ================= */
+  
+  .search-form {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+  
+  .search-form input,
+  .search-form select,
+  .search-form button {
+    margin-bottom: 15px;
+  }
+  
+  .search-form button {
+    width: 100%;
+    background-color: #004080;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  
+  .search-form button:hover {
+    background-color: #0066cc;
+  }
+  
+  /* ================= TRENDING SECTION ================= */
+  
+  .trending-wrapper {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+  }
+  
+  .trending-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #111;
+  }
+  
+  .trending-subtitle {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 30px;
+  }
+  
+  .trending-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  
+  .trending-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .trending-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .trending-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .card-title-overlay {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+  }
+  
+  /* ================= FOOTER ================= */
+  
+  .footer {
+    background-color: #f0f4f8;
+    padding: 40px;
+    color: #1F1F1F;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  
+  .footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+  
+  .footer-column {
+    flex: 1 1 calc(25% - 20px);
+    min-width: 180px;
+  }
+  
+  .footer-column h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .footer-column ul {
+    list-style: none;
+  }
+  
+  .footer-column li {
+    margin-bottom: 8px;
+  }
+  
+  .footer-column a {
+    text-decoration: none;
+    color: #004080;
+    transition: color 0.2s;
+  }
+  
+  .footer-column a:hover {
+    color: #0066cc;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    border-top: 1px solid #d1e3f0;
+    padding-top: 20px;
+  }
+  
+  .currency,
+  .legal {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .legal p {
+    margin-bottom: 5px;
+  }
+  
+  /* ================= SIDEBAR ================= */
+  
+  .offcanvas-body a {
+    font-size: 16px;
+    color: #004080;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .offcanvas-body a:hover {
+    color: #007bff;
+  }
+  
+  /* ================= UTILITY CLASSES ================= */
+  
+  .text-white {
+    color: #ffffff !important;
+  }
+  
+  .text-dark {
+    color: #333333 !important;
+  }
+  

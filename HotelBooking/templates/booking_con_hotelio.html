@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Booking Confirmation{% endblock %}
+
+{% block style %}
+<style>
+    .confirmation-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        display: flex;
+        gap: 2rem;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .hotel-card {
+        flex: 1;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .hotel-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .hotel-details {
+        padding: 1rem;
+    }
+
+    .hotel-details h2 {
+        margin: 0;
+        color: #2c3e50;
+    }
+
+    .summary-card {
+        flex: 1;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 1.5rem;
+    }
+
+    .section {
+        margin-bottom: 1.5rem;
+    }
+
+    .section h3 {
+        margin-bottom: 0.5rem;
+        color: #34495e;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 4px;
+    }
+
+    .section p {
+        margin: 4px 0;
+    }
+
+    .price-box {
+        background-color: #f8f8f8;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .price-box div {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.5rem 0;
+    }
+
+    .discount {
+        color: #27ae60;
+    }
+
+    .final-amount {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .note {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.5rem;
+        font-style: italic;
+    }
+
+    .promo-form {
+        display: flex;
+        gap: 10px;
+        margin-top: 1rem;
+    }
+
+    .promo-form input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .promo-form button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .promo-form button:hover {
+        background-color: #2980b9;
+    }
+
+    .pay-btn {
+        width: 100%;
+        margin-top: 2rem;
+        background-color: #27ae60;
+        color: white;
+        padding: 12px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .pay-btn:hover {
+        background-color: #219150;
+    }
+
+    .loader {
+        display: none;
+        text-align: center;
+        margin-top: 1rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="confirmation-container">
+
+    <!-- Hotel Card -->
+    <div class="hotel-card">
+        <div class="hotel-details">
+            <h2>{{ property.name }}</h2>
+            <br>
+            <p><strong>Location:</strong> {{ property.location }}</p>
+            <p><strong>Room Type:</strong> {{ room_type }}</p>
+            <p><strong>Rooms Booked:</strong> {{ rooms_booked }}</p>
+            <p><strong>Check-in:</strong> {{ checkin_date }}</p>
+            <p><strong>Check-out:</strong> {{ checkout_date }}</p>
+        </div>
+    </div>
+
+    <!-- Summary Card -->
+    <div class="summary-card">
+        <div class="section">
+            <h3>Guest Details</h3>
+            <p><strong>Name:</strong> {{ user_name }}</p>
+            <p><strong>Email:</strong> {{ user_email }}</p>
+            <p><strong>Phone:</strong> {{ user_phone }}</p>
+        </div>
+
+        <div class="section">
+            <h3>Price Summary</h3>
+            <div class="price-box">
+                <div>
+                    <span>Total Price:</span>
+                    <span>₹{{ total_price }}</span>
+                </div>
+                {% if discount > 0 %}
+                <div class="discount">
+                    <span>Discount ({{ discount }}%):</span>
+                    <span>- ₹{{ discount_amount }}</span>
+                </div>
+                {% endif %}
+                <hr>
+                <div class="final-amount">
+                    <span>Final Price:</span>
+                    <span>₹{{ final_price }}</span>
+                </div>
+                <p class="note">* This price is for a basic single room. Additional charges may be collected at checkout.</p>
+            </div>
+
+            <form method="get" class="promo-form">
+                <input type="text" name="code" placeholder="Enter Promo Code" value="{{ coupon_code }}">
+                <button type="submit">Apply</button>
+            </form>
+            
+            {% if invalid_code %}
+                <p style="color: red; font-size: 0.9rem; margin-top: 0.5rem;">Invalid Promo Code</p>
+            {% endif %}
+        </div>
+
+        <form method="post" action="" id="payment-form">
+            {% csrf_token %}
+            <button type="submit" class="pay-btn" id="pay-button">Pay Now</button>
+            <div class="loader" id="loader">Processing Payment... Please wait</div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('payment-form').addEventListener('submit', function () {
+        document.getElementById('pay-button').disabled = true;
+        document.getElementById('loader').style.display = 'block';
+    });
+    document.getElementById('payment-form').addEventListener('submit', function (event) {
+        event.preventDefault();  // Prevent actual form submission for simulation
+
+        const payButton = document.getElementById('pay-button');
+        const loader = document.getElementById('loader');
+
+        payButton.disabled = true;
+        loader.style.display = 'block';
+
+        // Simulate 4-second delay, then show error
+        setTimeout(() => {
+            loader.style.display = 'none';
+            payButton.disabled = false;
+
+            const errorMsg = document.createElement('p');
+            errorMsg.style.color = 'red';
+            errorMsg.style.fontSize = '0.9rem';
+            errorMsg.style.marginTop = '1rem';
+            errorMsg.innerText = '❌ Unable to connect to payment gateway. Please try again later.';
+
+            loader.parentNode.appendChild(errorMsg);
+        }, 4000);
+    });
+
+
+</script>
+{% endblock %}

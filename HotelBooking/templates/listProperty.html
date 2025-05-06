@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} HOTELIO | A HOTEL MANAGEMENT WEBSITE {% endblock title %}
+
+{% block main %}
+<link rel="stylesheet" href="{% static 'css/listProperty.css' %}">
+
+{% if messages %}
+  <div class="flash-messages">
+    {% for message in messages %}
+      <div class="alert alert-info" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div id="main" style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+  <section class="list-property-form">
+    <h2>List Your Property</h2>
+    <hr class="divider">
+
+    <form method="POST" action="{% url 'post_property_to_flask' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="property-name">Hotel Name:</label>
+        <input type="text" id="property-name" name="property_name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="property-location">Location (City):</label>
+        <input type="text" id="property-location" name="property_location" required>
+      </div>
+
+      <div class="form-group">
+        <label for="property-image">Upload Property Image:</label>
+        <input type="file" id="property-image" name="property_image" accept="image/*" required>
+      </div>
+
+      <div class="form-group">
+        <label for="license-number">License Number:</label>
+        <input type="text" id="license-number" name="license_number" required>
+      </div>
+
+      <div class="form-group">
+        <label for="rooms-available">Total Rooms Available:</label>
+        <input type="number" id="rooms-available" name="rooms_available" min="1" required>
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price for Single Room:</label>
+        <input type="number" id="price" name="price" min="1" step="any" required>
+      </div>
+
+      <div class="form-group">
+        <label for="property-description">Property Description:</label>
+        <textarea id="property-description" name="property_description" rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Room Types and Quantity:</label>
+        <div class="room-type-group">
+          <div>
+            <label for="ac-rooms">AC Rooms:</label>
+            <input type="number" id="ac-rooms" name="room_types[AC]" min="0" placeholder="e.g., 5">
+          </div>
+          <div>
+            <label for="non-ac-rooms">Non-AC Rooms:</label>
+            <input type="number" id="non-ac-rooms" name="room_types[Non-AC]" min="0" placeholder="e.g., 3">
+          </div>
+          <div>
+            <label for="deluxe-rooms">Deluxe Rooms:</label>
+            <input type="number" id="deluxe-rooms" name="room_types[Deluxe]" min="0" placeholder="e.g., 2">
+          </div>
+          <div>
+            <label for="duplex-rooms">Duplex Suites:</label>
+            <input type="number" id="duplex-rooms" name="room_types[Duplex]" min="0" placeholder="e.g., 1">
+          </div>
+          <div>
+            <label for="triplex-rooms">Triplex Suites:</label>
+            <input type="number" id="triplex-rooms" name="room_types[Triplex]" min="0" placeholder="e.g., 1">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button type="submit">Submit Property</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+{% endblock main %}

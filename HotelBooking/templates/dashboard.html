@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block style %}
+<style>
+body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header {
+    text-align: center;
+    padding: 40px 0 20px;
+}
+
+.dashboard-header h2 {
+    font-size: 32px;
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.dashboard-header p {
+    font-size: 16px;
+    color: #666;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.profile-card {
+    width: 100%;
+    max-width: 500px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease-in-out;
+}
+
+.profile-card:hover {
+    transform: translateY(-4px);
+}
+
+.profile-card h3 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #222;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.profile-info {
+    margin-bottom: 20px;
+}
+
+.profile-info label {
+    font-weight: 600;
+    display: block;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.profile-info p {
+    background-color: #f7f9fc;
+    padding: 12px;
+    border-radius: 6px;
+    color: #333;
+    font-size: 15px;
+    margin: 0;
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.btn-group .btn {
+    flex: 1 1 45%;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.btn-update {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.btn-update:hover {
+    background-color: #138496;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="dashboard-header">
+    <h2>Welcome, {{ request.session.name }}!</h2>
+    {% if request.session.role %}
+        <p>Your role: <strong>{{ request.session.role }}</strong></p>
+    {% endif %}
+</div>
+
+<div class="profile-container">
+    <div class="profile-card">
+        <h3>User Profile</h3>
+
+        <div class="profile-info">
+            <label>Full Name:</label>
+            <p>{{ request.session.name }}</p>
+        </div>
+        <div class="profile-info">
+            <label>Email:</label>
+            <p>{{ request.session.email }}</p>
+        </div>
+        <div class="profile-info">
+            <label>Phone Number:</label>
+            <p>{{ request.session.phone|default:"Not Provided" }}</p>
+        </div>
+
+        <div class="btn-group">
+            <a href="{% url 'edit_profile' %}" class="btn btn-update">Update Profile</a>
+            <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+            <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
